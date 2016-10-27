@@ -14,8 +14,13 @@ public class TeamTask {
         this.title = title;
     }
 
+    public LocalDateTime deadLine() {
+        return localDateTime;
+    }
+
+
     public String getDeadLine() {
-        return localDateTime.format(DateTimeFormatter.BASIC_ISO_DATE);
+        return localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     public String getTitle() {

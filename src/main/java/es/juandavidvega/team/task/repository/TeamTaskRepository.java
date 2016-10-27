@@ -17,6 +17,13 @@ public class TeamTaskRepository {
         return tasks.get(team);
     }
 
+
+    public Flux<TeamTask> findTaskBy(LocalDateTime limitDay) {
+        return Flux.fromStream(tasks.values().stream().flatMap(Flux::toStream))
+                .filter(teamTask -> teamTask.deadLine().isBefore(limitDay));
+    }
+
+
     private static HashMap<Team, Flux<TeamTask>> tasksByTeam() {
         return new HashMap<Team, Flux<TeamTask>>(){{
            put(Team.allblacks, sampleTasks(Team.allblacks));
