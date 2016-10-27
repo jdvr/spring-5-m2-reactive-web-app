@@ -3,6 +3,7 @@ package es.juandavidvega.team.task;
 
 import es.juandavidvega.team.task.handlers.LoadTeamTaskHandler;
 import es.juandavidvega.team.task.repository.TeamTaskRepository;
+import es.juandavidvega.team.task.routes.Routes;
 import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.web.reactive.function.RouterFunction;
@@ -22,16 +23,7 @@ public class App {
     }
 
     private void start() throws InterruptedException {
-        TeamTaskRepository repository = new TeamTaskRepository();
-        LoadTeamTaskHandler loadTeamTaskHandler = new LoadTeamTaskHandler(repository);
-        RouterFunction<?> routes =
-                route(GET("/hello"),
-                        request -> ServerResponse
-                                .ok()
-                                .body(fromObject("Evetything when better than expected!")));
-        routes = routes
-                .and(route(GET("/load/{team}/tasks"),
-                        loadTeamTaskHandler::handle));
+        RouterFunction<?> routes = Routes.load();
 
         HttpHandler handler = RouterFunctions.toHttpHandler(routes);
         ReactorHttpHandlerAdapter adapter = new ReactorHttpHandlerAdapter(handler);
